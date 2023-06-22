@@ -29,7 +29,7 @@ const page = () => {
         if (filterJob === "") {
           setCvs(cvdata);
         } else {
-          const cvFilter = cvdata.filter((el) => el.job === filterJob);
+          const cvFilter = cvdata.filter((el:any) => el.job === filterJob);
           console.log(cvFilter);
           setCvs(cvFilter);
         }
