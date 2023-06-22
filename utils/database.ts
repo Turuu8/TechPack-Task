@@ -13,8 +13,6 @@ export const connectDB = async () => {
      try {
           await mongoose.connect("mongodb+srv://Turmunkh:Hello0730.@cluster0.xtshz5v.mongodb.net/?retryWrites=true&w=majority" , {
                dbName : "task",
-               useNewURLParser : true,
-               useUnifiedTopology : true,
           })
 
           isConnected = true;
