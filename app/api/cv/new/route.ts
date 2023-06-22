@@ -1,8 +1,7 @@
 import CV from "@models/cv";
-import type { NextApiRequest } from "next"
 import { connectDB } from "@utils/database";
 
-export const POST = async (req : NextApiRequest) => {
+export const POST = async (req : any) => {
   const from = await req.json();
   try {
     await connectDB();

@@ -1,9 +1,8 @@
 
 import User from "@models/user";
-import type { NextApiRequest } from 'next';
 import { connectDB } from "@utils/database";
 
-export const GET = async (req: NextApiRequest, { params }: {params: {id: string}}) => {
+export const GET = async (req: any, { params }: {params: {id: string}}) => {
     try {
         await connectDB()
         const user = await User.find({ _id: params.id })

@@ -1,8 +1,7 @@
 import CV from "@models/cv";
-import type { NextApiRequest } from "next"
 import { connectDB } from "@utils/database"
 
-export const GET = async (req: NextApiRequest) => {
+export const GET = async (req : any) => {
      try {
          await connectDB()
          

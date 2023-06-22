@@ -1,8 +1,7 @@
 import CV from "@models/cv";
 import { connectDB } from "@utils/database";
-import type { NextApiRequest } from 'next';
 
-export const PUT = async (req: NextApiRequest, { params }: {params: {id : string}}) => {
+export const PUT = async (req : any, { params }: {params: {id : string}}) => {
     try {
         await connectDB()
         
@@ -16,7 +15,7 @@ export const PUT = async (req: NextApiRequest, { params }: {params: {id : string
     }
 } 
 
-export const PATCH = async (req: NextApiRequest, { params }: {params: {id : string}}) => {
+export const PATCH = async (req : any, { params }: {params: {id : string}}) => {
     const from  = await req.json();
     try {
         await connectDB()

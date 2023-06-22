@@ -1,8 +1,7 @@
 import User from "@models/user";
 import { connectDB } from "@utils/database";
-import type { NextApiRequest , NextApiResponse} from 'next';
 
-export const GET = async (request: NextApiRequest) => {
+export const GET = async (request: any) => {
    try {
        await connectDB()
 
@@ -13,7 +12,7 @@ export const GET = async (request: NextApiRequest) => {
    }
 } 
 
-export const POST = async (req:NextApiRequest, res: NextApiResponse) => {
+export const POST = async (req:any, res: any) => {
      const { email , role} = await req.json();
      try {
          await connectDB();

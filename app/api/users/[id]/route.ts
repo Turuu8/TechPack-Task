@@ -1,9 +1,8 @@
 import User from "@models/user";
 import { connectDB } from "@utils/database";
-import type { NextApiRequest } from 'next';
 
 
-export const PUT = async (req:NextApiRequest, { params } : {params: {id: string}}) => {
+export const PUT = async (req:any, { params } : {params: {id: string}}) => {
      const { role } = await req.json();
    
      try {
