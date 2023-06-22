@@ -36,7 +36,7 @@ const page = () => {
         if (filterLevel === "") {
           setCvs(cvdata);
         } else {
-          const cvFilter = cvdata.filter((el) => el.level === filterLevel);
+          const cvFilter = cvdata.filter((el: any) => el.level === filterLevel);
           setCvs(cvFilter);
         }
       } catch (error) {
