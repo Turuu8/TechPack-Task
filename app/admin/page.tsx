@@ -26,8 +26,8 @@ const page = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getJobs();
-      setData(data);
+       const data = await getJobs();
+       setData(data);
     })();
   }, []);
 
