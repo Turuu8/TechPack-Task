@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import Image from "next/image";
 import { CloseButton } from "./CloseButton";
+import { DialogProps } from "@types";
 
-export const Delete = ({ isOpen, closeModal, hadldeDelete }) => {
+export const Delete = ({ isOpen, closeModal, hadldeDelete }: DialogProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>

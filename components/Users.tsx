@@ -1,78 +1,104 @@
 "use client";
 
-import axios from "axios";
+import { Edit } from "./Edit";
 import Image from "next/image";
 import { useState } from "react";
+import { SemiLoader } from "./Loader";
+import { Field, Form, Formik } from "formik";
+import { editRole, userFilter } from "@utils";
+import { JobsPrps, MapUserProps } from "@types";
 
-export const Users = ({ email, username, role, image, _id }: T) => {
+export const Users = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
   const [edit, setEdit] = useState(false);
-  const [changeRole, setChangeRole] = useState(role);
+  const [userId, setUserId] = useState("");
+  const [editValue, setEditValue] = useState("");
+  const from = { phoneNumber: "", firstName: "" };
 
-  const handleEdit = async () => {
-    const res = await axios.put(`api/users/${_id}`, { role: changeRole });
-    console.log();
-    res.request.status === 200 ? alert("Амжилттай") : alert("Амжилтгүй");
+  const handleSubmit = async (props: { firstName: string; phoneNumber: string }) => {
+    setData({ ...data, users: [] });
+    const result = await userFilter(props);
+    setData({ ...data, users: result });
+  };
+
+  const allUser = () => {
+    setData({ ...data, users: [] });
+    setPage((p) => (p = "users"));
+    setRefresh((p) => !p);
+  };
+
+  const hadldeUpdate = async () => {
+    const update = await editRole({ editValue, userId });
+    if (update === true) {
+      setData({ ...data, users: [] });
+      setPage((p) => (p = "users"));
+      setRefresh((p) => !p);
+    }
+    setEdit(false);
   };
 
   return (
-    <div className="flex items-center border-[2px] mt-2 px-4 py-2 rounded-md">
-      <Image
-        src={image ? image : "/assets/images/profile.png"}
-        alt="profile image"
-        width={100}
-        height={100}
-        className="w-[35px] h-[35px] rounded-full"
-      />
-      <div className="flex justify-between w-full ml-[90px] relative items-center">
-        <h2>{email}</h2>
-        <h2 className="capitalize absolute m-auto left-[0] right-0 w-[250px]">{username}</h2>
-        <div className="flex gap-5 items-center">
-          {edit ? (
-            <>
-              <button
-                className={`border-[1px] px-2 py-1 rounded-md duration-100 ${changeRole === "admin" ? "border-[#000]" : "border-[#cecfcf]"}`}
-                onClick={() => setChangeRole("admin")}
-              >
-                Админ
-              </button>
-              <button
-                className={`border-[1px] px-2 py-1 rounded-md duration-100 ${changeRole === "user" ? "border-[#000]" : "border-[#cecfcf]"}`}
-                onClick={() => setChangeRole("user")}
-              >
-                Хэрэглэгч
-              </button>
-              <button
-                className="flex items-center gap-1 px-2 py-1 rounded-md duration-100 bg-[#1576ea] text-white border-[#0b4893] hover:border-b-[3px] active:border-b-[0px]"
-                onClick={() => {
-                  handleEdit();
-                  setEdit(false);
-                }}
-              >
-                <span>Хадгалах</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <h2 className="capitalize">{changeRole}</h2>
-              <button
-                className="flex items-center gap-1 border-[1px] border-[#000] p-1 rounded-md duration-100 hover:border-b-[3px] active:border-b-[0px]"
-                onClick={() => setEdit(true)}
-              >
-                {/* <Image alt="edit icon" src="/assets/icons/edit-pen.svg" width={20} height={20} className="w-[20px] h-[20px]" /> */}
-                <span>Засварлах</span>
-              </button>
-            </>
-          )}
+    <div className="flex flex-col pt-6 px-8 pb-10">
+      {/* ------ Filter form ------*/}
+      <div className="w-full pl-4 relative">
+        <Formik initialValues={from} onSubmit={handleSubmit}>
+          <Form className="flex gap-5">
+            <Field placeholder="Нэр" name="firstName" type="firstName" className={`rounded-md px-2 border`} />
+            <Field placeholder="Утасны дугаар" name="phoneNumber" type="phoneNumber" className={`rounded-md p-2 border`} />
+            <button type="submit" className="">
+              <Image alt="icon" src="/assets/icons/search.svg" width={30} height={30} className="object-contain h-[30px] w-[30px]" />
+            </button>
+          </Form>
+        </Formik>
+
+        <button type="button" className="absolute right-0 top-0 bottom-0 m-auto underline" onClick={() => allUser()}>
+          Бүх Хэрэглэгч
+        </button>
+      </div>
+
+      <div className="w-full relative pt-6">
+        <div className="flex-between text-base text-gray-500 px-5 py-2">
+          <span className="w-[250px]">Нэр</span>
+          <span className="w-[150px]">Утасны дугаар</span>
+          <span className="w-[400px]">Имэйл</span>
+          <span className="w-[150px]">Хэрэглэгч & Админ</span>
         </div>
+
+        <div className="flex flex-col pt-6 gap-5">
+          {data?.users[0] === undefined && <SemiLoader />}
+          {data?.users?.map((el: MapUserProps, i: number) => (
+            <div key={i} className="flex-between text-lg font-normal w-full px-5 py-2 border-b-2 rounded-md">
+              <span className="w-[250px] capitalize">{el.firstName}</span>
+              <span className="w-[150px]">{el.phoneNumber}</span>
+              <span className="w-[400px]">{el.email}</span>
+              <span className={`w-[150px] flex-between ${el.role === "admin" ? "pl-4" : ""}`}>
+                {el.role === "user" ? "Хэрэглэгч" : "   Админ"}
+                <button
+                  className="group relative"
+                  type="button"
+                  onClick={() => {
+                    setEdit(true);
+                    setUserId((p) => (p = el._id));
+                  }}
+                >
+                  <span className="group-hover:opacity-100 opacity-0 duration-300 absolute m-auto -left-2 -top-7 right-0">Засах</span>
+                  <Image alt="icon" src="/assets/icons/edit.svg" width={25} height={25} className="object-contain h-[25px] w-[25px]" />
+                </button>
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <Edit
+          closeModal={() => setEdit(false)}
+          isOpen={edit}
+          hadldeUpdate={hadldeUpdate}
+          data={data.users}
+          jobId={userId}
+          setEditValue={setEditValue}
+          editValue={editValue}
+          edit="role"
+        />
       </div>
     </div>
   );
 };
-
-export interface T {
-  email: string;
-  username: string;
-  role: string;
-  image: string;
-  _id: string;
-}

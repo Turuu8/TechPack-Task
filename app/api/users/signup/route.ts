@@ -28,7 +28,6 @@ export const POST = async (request: Request) => {
       firstName: firstName,
       lastName: lastName,
     });
-    console.log(result);
 
     const variant = {
       id: result._id,

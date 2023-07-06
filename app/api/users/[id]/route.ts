@@ -1,20 +1,18 @@
 import User from "@models/user";
 import { connectDB } from "@utils/database";
 
+export const PATCH = async (req: Request, { params }: { params: { id: string } }) => {
+  const { role } = await req.json();
+  try {
+    await connectDB();
 
-export const PUT = async (req:any, { params } : {params: {id: string}}) => {
-     const { role } = await req.json();
-   
-     try {
-          await connectDB();
-          // Find the existing prompt by ID
-          const existingUser = await User.findById(params.id);
-          
-          existingUser.role = role;
-          await existingUser.save();
-          
-       return new Response("Successfully updated the User role", { status: 200 });
-     } catch (error) {
-       return new Response("Error Updating User role", { status: 500 });
-     }
-   };
+    const user = await User.find({ _id: params.id });
+
+    user[0].role = role;
+    await user[0].save();
+
+    return new Response(JSON.stringify(true), { status: 201 });
+  } catch (error: unknown | any) {
+    return new Response(error, { status: 500 });
+  }
+};

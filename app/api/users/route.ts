@@ -1,42 +1,13 @@
 import User from "@models/user";
 import { connectDB } from "@utils/database";
 
-export const GET = async (request: any) => {
-   try {
-       await connectDB()
+export const GET = async (request: Request) => {
+  try {
+    await connectDB();
 
-       const users = await User.find({})
-       return new Response(JSON.stringify(users), { status: 200 })
-   } catch (error) {
-       return new Response("Failed to fetch users", { status: 500 })
-   }
-} 
-
-export const POST = async (req:any, res: any) => {
-     const { email , role} = await req.json();
-     try {
-         await connectDB();
-
-        const userExists = await User.findOne({ email: email });
-        console.log(userExists)
-
-
-        if (!userExists) {
-            const newUser = await User.create({
-              email: email,
-              username: email,
-              role: role,
-              image: "",
-            });
-            return new Response(JSON.stringify(newUser), { status: 200 });
-          }
-          else{
-            return new Response(JSON.stringify(userExists), { status: 200 });
-          }
-     } catch (error) {
-         return new Response("Error", { status: 500 });
-     }
- };
- 
-
-
+    const users = await User.find({});
+    return new Response(JSON.stringify(users), { status: 200 });
+  } catch (error) {
+    return new Response("Алдаа гарлаа дахин оролдон уу", { status: 500 });
+  }
+};

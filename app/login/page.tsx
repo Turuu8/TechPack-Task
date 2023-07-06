@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { AuthType, SubmitProps } from "@types";
 import { useAuthProvider } from "@context/AuthProvider";
-import { LoginValidationSchema, SignupValidationSchema } from "@utils";
+import { LoginValidationSchema, SignupValidationSchema } from "@utils/validation";
 import { useRouter } from "next/navigation";
 
 const Login = () => {

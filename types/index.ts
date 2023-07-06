@@ -36,3 +36,30 @@ export interface AddJobsProps {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   value: string;
 }
+
+export interface JobsPrps {
+  data: any;
+  setPage: Dispatch<SetStateAction<string>>;
+  setData: Dispatch<SetStateAction<never[] | any>>;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface DialogProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  hadldeDelete?: () => void;
+  hadldeUpdate?: () => void;
+  data?: any;
+  jobId?: string;
+  editValue?: string;
+  setEditValue?: Dispatch<SetStateAction<string>> | any;
+  edit?: string;
+}
+
+export interface MapUserProps {
+  _id: string;
+  role: string;
+  email: string;
+  firstName: string;
+  phoneNumber: string;
+}
