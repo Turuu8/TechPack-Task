@@ -14,9 +14,9 @@ export const POST = async (request: Request) => {
       jobName: jobName,
     });
 
-    return new Response(result, { status: 201 });
+    return new Response("Ажлын байр амжилтай үүслээ", { status: 201 });
   } catch (error: unknown | any) {
-    return new Response(error, { status: 500 });
+    return new Response("Алдаа гарлаа дахин оролдон уу", { status: 500 });
   }
 };
 
@@ -24,7 +24,7 @@ export const GET = async () => {
   try {
     await connectDB();
 
-    const jobs: any = await Job.find({});
+    const jobs: any = await Job.find();
     return new Response(JSON.stringify(jobs), { status: 201 });
   } catch (error: unknown | any) {
     return new Response(error, { status: 500 });

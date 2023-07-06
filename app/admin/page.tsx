@@ -19,6 +19,7 @@ const page = () => {
   const [filterPNumber, setFilterPNumber] = useState("");
 
   const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const router = useRouter();
 
@@ -29,7 +30,7 @@ const page = () => {
        const data = await getJobs();
        setData(data);
     })();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className="w-full flex flex-row">
@@ -75,7 +76,7 @@ const page = () => {
         <div className="m-8 bg-white">
           {currentList === 0 && <Cvs />}
           {currentList === 1 && <Users />}
-          {currentList === 2 && <Jobs data={data} />}
+          {currentList === 2 && <Jobs data={data} setData={setData} setRefresh={setRefresh} refresh={refresh} />}
         </div>
       </div>
     </div>

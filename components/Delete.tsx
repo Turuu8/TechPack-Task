@@ -1,10 +1,9 @@
 import { Fragment } from "react";
-import { DialogProps } from "@types";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { CloseButton } from "./CloseButton";
 
-export const Delete = ({ isOpen, closeModal }: DialogProps) => {
+export const Delete = ({ isOpen, closeModal, hadldeDelete }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -41,7 +40,7 @@ export const Delete = ({ isOpen, closeModal }: DialogProps) => {
                   <button type="button" className="border w-1/2 py-2 rounded-md" onClick={closeModal}>
                     Үгүй
                   </button>
-                  <button type="button" className="border w-1/2 py-2 rounded-md bg-gray-900 text-white" onClick={closeModal}>
+                  <button type="button" className="border w-1/2 py-2 rounded-md bg-gray-900 text-white" onClick={hadldeDelete}>
                     Тийм
                   </button>
                 </div>

@@ -1,9 +1,9 @@
 import { Fragment } from "react";
-import { DialogProps } from "@types";
+import { AddJobsProps } from "@types";
 import { Dialog, Transition } from "@headlessui/react";
 import { CloseButton } from "./CloseButton";
 
-export const AddJob = ({ isOpen, closeModal, handleSubmit, handleChange, value }) => {
+export const AddJob = ({ isOpen, closeModal, handleSubmit, handleChange, value }: AddJobsProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -42,11 +42,7 @@ export const AddJob = ({ isOpen, closeModal, handleSubmit, handleChange, value }
                   </div>
 
                   <div className="mt-4">
-                    <button
-                      type="submit"
-                      className="border w-full py-2 rounded-md bg-gray-900 text-white"
-                      // onClick={closeModal}
-                    >
+                    <button type="submit" className="border w-full py-2 rounded-md bg-gray-900 text-white">
                       Нэмэх
                     </button>
                   </div>
