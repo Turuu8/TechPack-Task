@@ -1,168 +1,83 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import axios from "axios";
+
 import Image from "next/image";
-import { Users } from "@components/Users";
-import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AuthType } from "@types";
+import { useRouter } from "next/navigation";
 import { useAuthProvider } from "@context/AuthProvider";
-import { Cvs } from "@components/Cvs";
+import { Cvs, Jobs, Users } from "@components";
+import axios from "axios";
+import { getJobs } from "@utils";
 
 const page = () => {
-  const [btn, setBtn] = useState(false);
+  const [currentList, setCurrentList] = useState(0);
   const [users, setUsers] = useState([]);
   const [cvs, setCvs] = useState([]);
   const [filterJob, setFilterJob] = useState("");
   const [filterLevel, setFilterLevel] = useState("");
   const [filterPNumber, setFilterPNumber] = useState("");
 
-  const { data } = useAuthProvider() as unknown as { data: { role: string; username: string; email: string; image: string; _id: string } };
+  const [data, setData] = useState([]);
+
+  const router = useRouter();
+
+  const { userInfo, logout } = useAuthProvider() as unknown as AuthType;
 
   useEffect(() => {
     (async () => {
-      try {
-        const userRes = await axios.get(`/api/users`);
-        const cvRes = await axios.get(`/api/cv`);
-        const Userdata = await userRes.data;
-        const cvdata = await cvRes.data;
-        setUsers(Userdata);
-        if (filterJob === "") {
-          setCvs(cvdata);
-        } else {
-          const cvFilter = cvdata.filter((el:any) => el.job === filterJob);
-          console.log(cvFilter);
-          setCvs(cvFilter);
-        }
-        if (filterLevel === "") {
-          setCvs(cvdata);
-        } else {
-          const cvFilter = cvdata.filter((el: any) => el.level === filterLevel);
-          setCvs(cvFilter);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+       const data = await getJobs();
+       setData(data);
     })();
-  }, [filterJob, filterLevel]);
-  console.log(filterPNumber);
+  }, []);
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto">
-      <div className="flex justify-between items-center mt-10">
-        <h1 className="capitalize font-medium text-3xl">админ</h1>
-        {/* ----------------- SIGN OUT & PROFILE ----------------- */}
-        <div className="flex justify-end items-center gap-10">
-          <div className="flex gap-4 items-center">
-            <div>
-              <h2 className="text-2xl text-end capitalize">{data?.username}</h2>
-              <span className="text-sm opacity-50">{data?.email}</span>
-            </div>
-            <Image
-              src={data.image ? data.image : "/assets/images/profile.png"}
-              alt="profile image"
-              width={50}
-              height={50}
-              className="w-[50px] h-[50px] rounded-full"
-            />
-          </div>
+    <div className="w-full flex flex-row">
+      <div className="w-[20%] min-w-[300px] bg-white h-screen flex flex-col shadow overflow-hidden fixed top-0 left-0">
+        <h1 className="capitalize font-medium text-3xl px-12 py-8 mb-16">админ</h1>
+        {leftList.map((el, i) => (
           <button
-            className="bg-[#1576ea] rounded-md text-white px-6 my-2 duration-100 active:translate-y-[3px]  border-[#0b4893] hover:border-b-[3px] active:border-b-[0px]"
-            type="button"
-            onClick={(e) => {
-              signOut();
-            }}
+            key={i}
+            className={`${
+              currentList === i ? "from-gray-300" : "hover:border-l-[8px] border-gray-300"
+            } bg-gradient-to-r flex gap-5 items-center py-3 px-10 w-full duration-300`}
+            onClick={() => setCurrentList(i)}
           >
-            <h5 className="text-lg">Гарах</h5>
+            <Image alt="icon" src={el.src} width={40} height={40} className="object-contain h-[40px] w-[40px]" />
+            <h2 className="text-xl">{el.title}</h2>
           </button>
-        </div>
+        ))}
+
+        <button
+          className="flex gap-5 items-center py-3 px-10 w-full mt-32 hover:border-l-[14px] duration-300 border-gray-300"
+          type="button"
+          onClick={logout}
+        >
+          <Image alt="icon" src="/assets/icons/logout.svg" width={40} height={40} className="object-contain h-[40px] w-[40px]" />
+          <h2 className="text-xl">Гарах</h2>
+        </button>
       </div>
 
-      {/* ----------------- 2 MENU ----------------- */}
-      <div className="flex h-10 justify-center gap-5 mt-3 w-full">
-        <button
-          className={`${!btn ? "text-white bg-[#1576ea]" : "border-[2px]"} px-10 w-1/2 duration-100 rounded-md active:translate-y-[2px]`}
-          onClick={() => setBtn(false)}
-        >
-          Анкет
-        </button>
-        <button
-          className={`${btn ? "text-white bg-[#1576ea]" : "border-[2px]"} px-10 w-1/2 duration-100 rounded-md active:translate-y-[2px]`}
-          onClick={() => setBtn(true)}
-        >
-          Хэрэглэгчид
-        </button>
-      </div>
-      <div className="flex mt-5 gap-10 justify-center">
-        {/* --------- JOB sreach --------- */}
-        <label className="flex flex-col gap-3 w-1.5/5">
-          <span className="opacity-50">Мэргэжэл</span>
-          <select
-            name="select"
-            className="border-[1px] w-full rounded-md p-2"
-            onChange={(e) => {
-              if (e.target.value === "-Бүх") {
-                setFilterJob("");
-              } else {
-                setFilterJob(e.target.value);
-              }
-            }}
-          >
-            {jobs.map((el, i) => (
-              <option key={i} value={el}>
-                {el}
-              </option>
-            ))}
-          </select>
-        </label>
-        {/* --------- Education Level sreach --------- */}
-        <label className="flex flex-col gap-3 w-1/5">
-          <span className="opacity-50">Боловсролын түвшин</span>
-          <select
-            name="select"
-            className="border-[1px] w-full rounded-md p-2"
-            onChange={(e) => {
-              if (e.target.value === "-Бүх") {
-                setFilterLevel("");
-              } else {
-                setFilterLevel(e.target.value);
-              }
-            }}
-          >
-            {["-Бүх", "Доктор", "Магистр", "Бакалавр", "Мэргэшсэн", "Тусгай дунд", "Бүрэн дунд", "Бүрэн бус дунд", "Бага"].map((el, i) => (
-              <option key={i} value={el}>
-                {el}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {!btn ? (
-        // ----------------- ALL CV -----------------
-        <>
-          <div className="mt-20">
-            {cvs.map((el: any, i: number) => (
-              <Cvs key={i} {...el} />
-            ))}
-          </div>
-        </>
-      ) : (
-        // ----------------- ALL USER -----------------
-        <div className="w-full pt-20">
-          <div className="flex justify-between ml-40 pb-5">
-            <h2 className="capitalize opacity-50">имэйл</h2>
-            <h2 className="capitalize opacity-50">хэрэглэгчийн нэр</h2>
-            <h3 className="capitalize opacity-50 mr-40">үүрэг</h3>
-          </div>
-          <div className="flex flex-col">
-            {users?.map((el: { email: string; username: string; role: string; image: string; _id: string }, i: number) => {
-              if (data._id === el._id) {
-                return;
-              }
-              return <Users key={i} {...el} />;
-            })}
+      <div className="w-[80%] flex flex-col ml-[20%]">
+        <div className="flex justify-end items-center py-5 w-full pr-20 bg-white">
+          <div className="flex justify-end items-center gap-10">
+            <div className="flex gap-4 items-center">
+              <div className="flex flex-col justify-end">
+                <span className="text-2xl text-end capitalize font-semibold">
+                  {userInfo?.lastName} <span>{userInfo?.firstName}</span>
+                </span>
+                <span className="text-xl opacity-50 text-end">{userInfo?.email}</span>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+
+        <div className="m-8 bg-white">
+          {currentList === 0 && <Cvs />}
+          {currentList === 1 && <Users />}
+          {currentList === 2 && <Jobs data={data} />}
+        </div>
+      </div>
     </div>
   );
 };
@@ -182,4 +97,10 @@ const jobs = [
   "Хөдөө аж ахуй",
   "Эрсдэлийн удирдлага",
   "Бизнес хөгжил",
+];
+
+const leftList = [
+  { src: "/assets/icons/cvs.svg", title: "Анкет" },
+  { src: "/assets/icons/users.svg", title: "Хэрэглэгчид" },
+  { src: "/assets/icons/jobs.svg", title: "Ажлын Байр" },
 ];

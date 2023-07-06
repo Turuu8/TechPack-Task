@@ -58,7 +58,7 @@ export const Users = ({ email, username, role, image, _id }: T) => {
                 className="flex items-center gap-1 border-[1px] border-[#000] p-1 rounded-md duration-100 hover:border-b-[3px] active:border-b-[0px]"
                 onClick={() => setEdit(true)}
               >
-                <Image alt="edit icon" src="/assets/icons/edit-pen.svg" width={20} height={20} className="w-[20px] h-[20px]" />
+                {/* <Image alt="edit icon" src="/assets/icons/edit-pen.svg" width={20} height={20} className="w-[20px] h-[20px]" /> */}
                 <span>Засварлах</span>
               </button>
             </>
