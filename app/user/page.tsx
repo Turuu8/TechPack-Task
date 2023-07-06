@@ -2,18 +2,18 @@
 "use client";
 
 import axios from "axios";
-import Image from "next/image";
 import { From } from "@components/From";
-import { signOut } from "next-auth/react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAuthProvider } from "@context/AuthProvider";
+import { AuthType } from "@types";
+import { useRouter } from "next/navigation";
 
 const page = () => {
-  const { data } = useAuthProvider() as unknown as { data: { _id: string; username: string; email: string; image: string } };
+  const { userInfo, setLoader, logout } = useAuthProvider() as unknown as AuthType;
   const [cancel, setCancel] = useState(false);
   const [history, setHistory] = useState<any>();
   const [from, setFrom] = useState<O | any>({
-    userId: data._id,
+    userId: "",
     aboutMe: "",
     lastName: "",
     firstName: "",
@@ -29,6 +29,7 @@ const page = () => {
     schoolName: "",
     job: "",
   });
+  const router = useRouter();
 
   const hanleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -60,83 +61,43 @@ const page = () => {
     }
   };
 
-  const fetchHistory = async () => {
-    const res = await axios.put(`api/cv/${data._id}`, {
-      id: data._id,
-    });
-
-    const dataCV = await res.data;
-    if (dataCV[0] === undefined) {
-    } else {
-      setCancel(true);
-      setFrom({
-        aboutMe: dataCV[0].aboutMe,
-        lastName: dataCV[0].lastName,
-        firstName: dataCV[0].firstName,
-        idNumber: dataCV[0].idNumber,
-        birthday: dataCV[0].birthday,
-        phoneNumber: dataCV[0].phoneNumber,
-        salary: dataCV[0].salary,
-        gender: dataCV[0].gender,
-        maritalStatus: dataCV[0].maritalStatus,
-        enrollmentYear: dataCV[0].enrollmentYear,
-        graduatedYear: dataCV[0].graduatedYear,
-        level: dataCV[0].level,
-        schoolName: dataCV[0].schoolName,
-        job: dataCV[0].job,
-      });
-      setHistory(dataCV[0]);
-    }
-  };
-
-  useEffect(() => {
-    data && fetchHistory();
-  }, []);
-
   return (
-    <div className="w-full max-w-[1280px] mx-auto relative ">
-      <div className="pt-[80px] flex justify-between items-center">
-        <h1 className="text-6xl">Анкет</h1>
-        <div className="flex gap-6">
-          {/*  -------------- USER PROFILE -------------- */}
-          <div className="flex gap-4 items-center">
-            <div>
-              <h2 className="text-2xl text-end capitalize">{data?.username}</h2>
-              <span className="text-sm opacity-50">{data?.email}</span>
+    <>
+      <div className="w-full bg-white">
+        <div className="max-width py-5 flex justify-between items-center">
+          <h1 className="text-3xl">Анкет</h1>
+          <div className="flex gap-5">
+            <div className="flex flex-col items-end">
+              <span className="text-2xl text-end capitalize font-semibold">
+                {userInfo?.lastName}
+                <span>{userInfo?.firstName}</span>
+              </span>
+              <span className="text-xl opacity-50">{userInfo?.email}</span>
             </div>
-            <Image
-              src={`${data.image ? data.image : "/assets/images/profile.png"}`}
-              alt="profile image"
-              width={50}
-              height={50}
-              className="w-[50px] h-[50px] rounded-full"
-            />
+            <button className="px-6 my-2 click-btn bg-[#f4f4f4] hover-btn" type="button" onClick={logout}>
+              <h5 className="text-lg">Гарах</h5>
+            </button>
           </div>
-          {/*  -------------- SIGN OUT FUN -------------- */}
-          <button
-            className="border-[1px] bg-[#1576ea] rounded-md text-white px-6 my-2 duration-100 active:translate-y-[3px]"
-            type="button"
-            onClick={(e) => {
-              signOut();
-            }}
-          >
-            <h5 className="text-lg">Гарах</h5>
-          </button>
         </div>
       </div>
-      {/*  -------------- FROM -------------- */}
-      {cancel ? null : (
-        <div className="pt-[100px]">
-          <button className="bg-[#1576ea] text-white py-5 px-10 rounded-lg duration-100 active:translate-y-[3px]" onClick={() => setCancel(true)}>
-            <h5 className="text-xl">Анкет үүсгэх</h5>
-            <span className="text-4xl">+</span>
-          </button>
+      <div className="w-full max-width relative">
+        <div className="pt-[80px] flex justify-between items-center">
+          <div className="flex gap-6"></div>
         </div>
-      )}
-      {cancel ? (
-        <From jobs={jobs} setCancel={setCancel} from={from} setFrom={setFrom} hanleSubmit={history ? hanleEdit : hanleSubmit} history={history} />
-      ) : null}
-    </div>
+        {/*  -------------- FROM -------------- */}
+        {cancel ? null : (
+          <div className="pt-[100px]">
+            <button className="bg-[#1576ea] text-white py-5 px-10 rounded-lg duration-100 active:translate-y-[3px]" onClick={() => setCancel(true)}>
+              <h5 className="text-xl">Анкет үүсгэх</h5>
+              <span className="text-4xl">+</span>
+            </button>
+          </div>
+        )}
+        {cancel ? (
+          <From jobs={jobs} setCancel={setCancel} from={from} setFrom={setFrom} hanleSubmit={history ? hanleEdit : hanleSubmit} history={history} />
+        ) : null}
+      </div>
+    </>
   );
 };
 

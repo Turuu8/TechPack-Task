@@ -1,4 +1,4 @@
-import "@styles/global.css";
+import "./global.css";
 import { ReactNode } from "react";
 import Provider from "@components/Provider";
 import { AuthProvider } from "@context/AuthProvider";

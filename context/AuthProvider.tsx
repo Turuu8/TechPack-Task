@@ -1,60 +1,65 @@
 "use client";
 
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import jwt from "jsonwebtoken";
+import { AuthType } from "@types";
+import { Loader } from "@components";
 import { useRouter } from "next/navigation";
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
-const Auth = createContext<UserInfo | null>(null);
-
-interface UserInfo {
-  userCheck: boolean;
-  data: never[];
-  setUserCheck: Dispatch<SetStateAction<boolean>>;
-  setData: Dispatch<SetStateAction<never[]>>;
-}
+const Auth = createContext<AuthType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [userCheck, setUserCheck] = useState(false);
-  const [data, setData] = useState([]);
+  const [checking, setChecking] = useState(false);
+  const [token, setToken] = useState<null | string>("");
+  const [userInfo, setUserInfo] = useState();
+  const [loader, setLoader] = useState(true);
 
   const router = useRouter();
-  const { data: session } = useSession() as unknown as {
-    data: {
-      user: { id: string };
-      session: { user: { id: string } };
-    };
+
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const data: any = jwt.decode(token);
+      setToken(token);
+      setChecking(true);
+      setUserInfo(data);
+      data ? router.push(`/${data.role}`) : router.push("/login");
+    } else {
+      setChecking(false);
+      router.push("/login");
+    }
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await axios.get(`/api/users/${session?.user?.id}/posts`);
-      const fetchData = await response.data;
-      setData(fetchData[0]);
+    checkAuth();
+    setLoader(false);
+  }, []);
 
-      if (fetchData[0].role === "admin") {
-        router.push("/admin");
-      } else {
-        if (fetchData[0].role === "user") {
-          router.push("/user");
-        }
-      }
-    };
-    if (session?.user?.id) fetchPosts();
-  }, [router, session?.user?.id]);
+  const logout = () => {
+    setLoader(true);
+    localStorage.removeItem("token");
+    location.reload();
+    router.push("/login");
+    return;
+  };
 
-  // user login check
-  useEffect(() => {
-    session === null ? setUserCheck(false) : setUserCheck(true);
-  }, [session]);
-
-  useEffect(() => {
-    !userCheck && router.push("/login");
-  }, [router, userCheck]);
-
-  const value = { userCheck, setUserCheck, data, setData };
-
-  return <Auth.Provider value={value}>{children}</Auth.Provider>;
+  return (
+    <Auth.Provider
+      value={{
+        checking,
+        setChecking,
+        token,
+        setToken,
+        userInfo,
+        setUserInfo,
+        setLoader,
+        logout,
+      }}
+    >
+      {children}
+      {loader && <Loader />}
+    </Auth.Provider>
+  );
 };
 
 export const useAuthProvider = () => useContext(Auth);
