@@ -32,3 +32,13 @@ export const getJobs = async () => {
     console.log(error);
   }
 };
+
+export const deleleteJob = async (props: string) => {
+  try {
+    const res = await axios.delete(`api/jobs/${props}`);
+    return res.data;
+  } catch (error: unknown | any) {
+    console.log(error.response);
+    // alert(error.response.data);
+  }
+};

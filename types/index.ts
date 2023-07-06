@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface SubmitProps {
   email: string;
@@ -29,7 +29,10 @@ export interface UserInfo {
   lastName?: string;
 }
 
-export interface DialogProps {
+export interface AddJobsProps {
   isOpen: boolean;
   closeModal: () => void;
+  handleSubmit: (e: FormEvent) => void;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }

@@ -7,6 +7,6 @@ const JobSchema = new Schema({
   },
 });
 
-const Job = models.Job || model("job", JobSchema);
+const Job = models.Job || model("Job", JobSchema);
 
 export default Job;
