@@ -63,3 +63,24 @@ export interface MapUserProps {
   firstName: string;
   phoneNumber: string;
 }
+
+export interface FromProps {
+  type: string;
+  isOpen: boolean;
+  closeModal: () => void;
+  handleSubmit: (props: GeneralFrom) => void;
+  from: GeneralFrom | any;
+}
+
+export interface GeneralFrom {
+  userid?: string;
+  lastName?: string;
+  firstName?: string;
+  aboutMe?: string;
+  gender?: string;
+  birthday?: string;
+  idNumber?: string;
+  phoneNumber?: string;
+  location?: string;
+  email?: string;
+}

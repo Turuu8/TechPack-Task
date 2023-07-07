@@ -1,6 +1,6 @@
 "use client";
 
-import { Edit } from "./Edit";
+import { Edit } from "./Dialog/Edit";
 import Image from "next/image";
 import { useState } from "react";
 import { SemiLoader } from "./Loader";
@@ -17,7 +17,13 @@ export const Users = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
   const handleSubmit = async (props: { firstName: string; phoneNumber: string }) => {
     setData({ ...data, users: [] });
     const result = await userFilter(props);
-    setData({ ...data, users: result });
+    if (result === "Шүүлт олдсонгүй") {
+      setData({ ...data, users: [] });
+      setPage((p) => (p = "users"));
+      setRefresh((p) => !p);
+    } else {
+      setData({ ...data, users: result });
+    }
   };
 
   const allUser = () => {
@@ -42,7 +48,7 @@ export const Users = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
       <div className="w-full pl-4 relative">
         <Formik initialValues={from} onSubmit={handleSubmit}>
           <Form className="flex gap-5">
-            <Field placeholder="Нэр" name="firstName" type="firstName" className={`rounded-md px-2 border`} />
+            <Field placeholder="Нэр" name="firstName" type="firstName" className={`w-[235px] rounded-md px-2 border`} />
             <Field placeholder="Утасны дугаар" name="phoneNumber" type="phoneNumber" className={`rounded-md p-2 border`} />
             <button type="submit" className="">
               <Image alt="icon" src="/assets/icons/search.svg" width={30} height={30} className="object-contain h-[30px] w-[30px]" />

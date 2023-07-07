@@ -14,7 +14,7 @@ const Login = () => {
 
   const router = useRouter();
 
-  const { setToken, setChecking, setLoader } = useAuthProvider() as AuthType;
+  const { setToken, setChecking, setLoader, setUserInfo } = useAuthProvider() as AuthType;
 
   const login = async (props: SubmitProps) => {
     try {
@@ -22,15 +22,18 @@ const Login = () => {
         email: props.email,
         password: props.password,
       });
-      setToken(res.data);
+      setToken(res.data.token);
       setChecking(true);
-      localStorage.setItem("token", res.data);
-      location.reload();
+      setUserInfo(res.data.user);
+      localStorage.setItem("token", res.data.token);
+      res.data.user.role === "admin" && router.push(`/${res.data.user.role}`);
+      res.data.user.role === "user" && location.reload();
+      setTimeout(() => {
+        res.data.user.role === "admin" && setLoader(false);
+      }, 500);
     } catch (error: any) {
       setLoader(false);
       alert(error.response.data);
-    } finally {
-      setLoader(false);
     }
   };
 
@@ -43,9 +46,10 @@ const Login = () => {
         password: props.password,
         phoneNumber: props.phoneNumber,
       });
-      setToken(res.data);
+      setToken(res.data.token);
       setChecking(true);
-      localStorage.setItem("token", res.data);
+      setUserInfo(res.data.user);
+      localStorage.setItem("token", res.data.token);
       location.reload();
     } catch (error: any) {
       setLoader(false);

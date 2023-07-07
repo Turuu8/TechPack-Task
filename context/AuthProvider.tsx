@@ -39,7 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoader(true);
     localStorage.removeItem("token");
     router.push("/login");
-    location.reload();
+    setLoader(false);
+    // location.reload();
   };
 
   return (

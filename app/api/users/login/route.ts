@@ -29,8 +29,8 @@ export const POST = async (request: Request) => {
     };
     const token = jwt.sign(variant, "task");
 
-    const data = JSON.stringify({ existingUser, token });
-    return new Response(token, { status: 201 });
+    const data = JSON.stringify({ user: existingUser, token });
+    return new Response(data, { status: 201 });
   } catch (error) {
     return new Response("Failed to login", { status: 500 });
   }

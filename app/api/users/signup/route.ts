@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "@models/user";
 import { connectDB } from "@utils/database";
+import CV from "@models/cv";
 
 export const POST = async (request: Request) => {
   const { email, password, phoneNumber, firstName, lastName } = await request.json();
@@ -29,6 +30,39 @@ export const POST = async (request: Request) => {
       lastName: lastName,
     });
 
+    await CV.create({
+      userid: result._id,
+      general: {
+        aboutMe: "",
+        lastName: "",
+        firstName: "",
+        idNumber: "",
+        birthday: "",
+        gender: "",
+      },
+      connect: {
+        phoneNumber: "",
+        email: "",
+        location: "",
+      },
+      planWork: {
+        salary: "",
+        workingType: "",
+        job: "",
+      },
+      education: [
+        {
+          degree: "",
+          country: "",
+          schoolName: "",
+          occupation: "",
+          gpa: "",
+          startYear: "",
+          endYear: "",
+        },
+      ],
+    });
+
     const variant = {
       id: result._id,
       email: result.email,
@@ -40,7 +74,8 @@ export const POST = async (request: Request) => {
     };
     const token = jwt.sign(variant, "task");
 
-    return new Response(token, { status: 201 });
+    const data = JSON.stringify({ user: result, token });
+    return new Response(data, { status: 201 });
   } catch (error) {
     return new Response("Хэрэглэгчийг үүсгэж чадсангүй", { status: 500 });
   }

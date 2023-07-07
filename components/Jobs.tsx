@@ -1,8 +1,8 @@
 import axios from "axios";
 import Image from "next/image";
-import { Edit } from "./Edit";
-import { AddJob } from "./AddJob";
-import { Delete } from "./Delete";
+import { Edit } from "./Dialog/Edit";
+import { AddJob } from "./Dialog/AddJob";
+import { Delete } from "./Dialog/Delete";
 import { JobsPrps } from "@types";
 import { SemiLoader } from "./Loader";
 import { FormEvent, useState } from "react";

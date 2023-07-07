@@ -1,3 +1,4 @@
+import { GeneralFrom } from "@types";
 import axios from "axios";
 
 export const getUsers = async () => {
@@ -51,5 +52,51 @@ export const userFilter = async (props: { firstName: string; phoneNumber: string
     return res.data;
   } catch (error: unknown | any) {
     alert(error.response.data);
+    return error.response.data;
+  }
+};
+
+export const generalFormGet = async (props: string) => {
+  try {
+    const res = await axios.get(`api/cv/new`, {
+      params: {
+        id: props,
+      },
+    });
+    return res.data;
+  } catch (error: unknown | any) {
+    return error.response.data;
+  }
+};
+
+interface PutProps {
+  type: string;
+  form: GeneralFrom;
+}
+
+export const formPut = async (props: PutProps) => {
+  try {
+    const res = await axios.put(`api/cv/new`, props);
+    return res.data;
+  } catch (error: unknown | any) {
+    return error.response.data;
+  }
+};
+
+export const formEdit = async (props) => {
+  try {
+    const res = await axios.patch(`api/cv/new`, { form: props });
+    return res.data;
+  } catch (error: unknown | any) {
+    return error.response.data;
+  }
+};
+
+export const formDelete = async (props) => {
+  try {
+    const res = await axios.delete(`api/cv/${props}`);
+    return res.data;
+  } catch (error: unknown | any) {
+    return error.response.data;
   }
 };

@@ -8,23 +8,38 @@ export const POST = async (request: Request) => {
 
     if (firstName) {
       if (phoneNumber) {
-        const findUsers = await User.find({ firstName: firstName, phoneNumber: phoneNumber });
+        const findUsers = await User.findOne({ firstName: firstName, phoneNumber: phoneNumber });
+
         if (findUsers) {
-          return new Response(JSON.stringify(findUsers), { status: 201 });
+          return new Response(JSON.stringify([findUsers]), { status: 201 });
+        }
+
+        return new Response("Шүүлт олдсонгүй", { status: 500 });
+      }
+
+      const findUsers = await User.find({ firstName: firstName });
+
+      if (findUsers[0] === undefined) {
+        const findUsers = await User.findOne({ firstName: firstName });
+
+        if (findUsers) {
+          return new Response(JSON.stringify([findUsers]), { status: 201 });
         }
         return new Response("Шүүлт олдсонгүй", { status: 500 });
       }
-      const findUsers = await User.find({ firstName: firstName });
+
       if (findUsers) {
         return new Response(JSON.stringify(findUsers), { status: 201 });
       }
       return new Response("Шүүлт олдсонгүй", { status: 500 });
     } else {
       if (phoneNumber) {
-        const findUsers = await User.find({ phoneNumber: phoneNumber });
+        const findUsers = await User.findOne({ phoneNumber: phoneNumber });
+
         if (findUsers) {
-          return new Response(JSON.stringify(findUsers), { status: 201 });
+          return new Response(JSON.stringify([findUsers]), { status: 201 });
         }
+
         return new Response("Шүүлт олдсонгүй", { status: 500 });
       }
     }
