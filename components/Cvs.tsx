@@ -2,17 +2,16 @@
 
 import React, { useState } from "react";
 import { SemiLoader } from "./Loader";
-import { From } from "./Dialog/From";
+import { Forms } from "./Dialog/Forms";
 import { Field, Form, Formik } from "formik";
 import Image from "next/image";
-import { cvitaeFilter } from "@utils";
 
-export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilter }) => {
+export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilter }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState([]);
   const from = { job: "", firstName: "", salary: "" };
 
-  const handleSubmit = async (props) => {
+  const handleSubmit = async (props: { job: string; firstName: string; salary: string }) => {
     if (!props.job) {
       if (!props.salary) {
         if (!props.firstName) {
@@ -77,10 +76,10 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
   };
 
   const allUser = () => {
-    setPage((p) => (p = "cvitaes"));
+    setPage((p: string) => (p = "cvitaes"));
     setData([]);
     setFilter([]);
-    setRefresh((p) => !p);
+    setRefresh((p: boolean) => !p);
   };
 
   return (
@@ -90,7 +89,7 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
           <Form className="flex gap-5 text-sm">
             <Field as="select" placeholder="Ажлын байр" name="job" type="job" className={`rounded-md p-2 border max-w-xs`}>
               <option value="">---</option>
-              {jobs?.map((el, i) => (
+              {jobs?.map((el: { jobName: string }, i: number) => (
                 <option key={i} value={el.jobName}>
                   {el.jobName}
                 </option>
@@ -117,7 +116,7 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
 
       <div className="flex flex-col gap-5 pt-16">
         {filter[0] === undefined && <SemiLoader />}
-        {filter?.map((el: { planWork: { job: string; salary: string }; general: { lastName: string; firstName: string } }, i: number) => (
+        {filter?.map((el: any, i: number) => (
           <button
             key={i}
             className="w-full py-2 border-b-2 rounded-md px-5 flex-between hover-btn"
@@ -134,7 +133,7 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
           </button>
         ))}
       </div>
-      <From
+      <Forms
         isOpen={isOpen}
         closeModal={() => setIsOpen(false)}
         type="detail"

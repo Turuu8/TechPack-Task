@@ -6,7 +6,7 @@ import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { Connect, Detail, Education, General, PlanWork } from "./FormPages";
 
-export const From = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps) => {
+export const Forms = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps) => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {

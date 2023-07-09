@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import { From } from "@components";
+import { Forms } from "@components";
 import { useEffect, useState } from "react";
 import { AuthType, GeneralFrom } from "@types";
 import { formDelete, formEdit, formPut, generalFormGet } from "@utils";
@@ -93,7 +93,7 @@ const page = () => {
     setRefresh((p) => !p);
   };
 
-  const deleteFrom = async (props) => {
+  const deleteFrom = async (props: string) => {
     const res = await formDelete(props);
     console.log(res);
   };
@@ -178,7 +178,7 @@ const page = () => {
             >
               <Image alt="icon" src="/assets/icons/edit.svg" width={25} height={25} className="object-contain h-[25px] w-[25px]" />
             </button>
-            <From
+            <Forms
               closeModal={() => {
                 setIsOpen({ ...isOpen, general: !isOpen.general });
               }}
@@ -296,7 +296,7 @@ const page = () => {
             >
               <Image alt="icon" src="/assets/icons/add.svg" width={30} height={30} className="object-contain h-[30px] w-[30px]" />
             </button>
-            <From
+            <Forms
               closeModal={() => {
                 setIsOpen({ ...isOpen, education: !isOpen.education });
               }}

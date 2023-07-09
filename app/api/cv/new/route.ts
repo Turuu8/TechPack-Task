@@ -1,6 +1,6 @@
 import CV from "@models/cv";
-import { connectDB } from "@utils/database";
 import { ObjectId } from "mongodb";
+import { connectDB } from "@utils/database";
 
 export const PATCH = async (req: Request) => {
   const { form } = await req.json();
@@ -15,7 +15,7 @@ export const PATCH = async (req: Request) => {
     filter[0].occupation = form.update.occupation;
     filter[0].schoolName = form.update.schoolName;
     filter[0].endYear = form.update.endYear;
-    filter[0].enstartYear = form.update.enstartYear;
+    filter[0].startYear = form.update.startYear;
 
     await exist.save();
 

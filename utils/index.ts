@@ -73,16 +73,6 @@ export const userFilter = async (props: { firstName: string; phoneNumber: string
   }
 };
 
-export const cvitaeFilter = async (props: { firstName: string; job: string; salary: string }) => {
-  try {
-    const res = await axios.post(`api/cv/filter`, props);
-    return res.data;
-  } catch (error: unknown | any) {
-    alert(error.response.data);
-    return error.response.data;
-  }
-};
-
 export const generalFormGet = async (props: string) => {
   try {
     const res = await axios.get(`api/cv/new`, {
@@ -110,7 +100,7 @@ export const formPut = async (props: PutProps) => {
   }
 };
 
-export const formEdit = async (props) => {
+export const formEdit = async (props: any) => {
   try {
     const res = await axios.patch(`api/cv/new`, { form: props });
     return res.data;
@@ -119,7 +109,7 @@ export const formEdit = async (props) => {
   }
 };
 
-export const formDelete = async (props) => {
+export const formDelete = async (props: string) => {
   try {
     const res = await axios.delete(`api/cv/${props}`);
     return res.data;

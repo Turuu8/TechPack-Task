@@ -5,5 +5,5 @@ export * from "./Cvs";
 export * from "./Dialog/AddJob";
 export * from "./Dialog/Delete";
 export * from "./Dialog/Edit";
-export * from "./Dialog/From";
+export * from "./Dialog/Forms";
 export * from "./Dialog/FormPages/Connect";

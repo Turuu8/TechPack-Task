@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [currentForm, setCurrentForm] = useState("login");
-  const from = { email: "", phoneNumber: "", password: "12345678", firstName: "", lastName: "" };
+  const from = { email: "", phoneNumber: "", password: "", firstName: "", lastName: "" };
 
   const router = useRouter();
 
