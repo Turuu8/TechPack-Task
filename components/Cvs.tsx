@@ -77,7 +77,7 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
   };
 
   const allUser = () => {
-    setPage((p) => (p = "all"));
+    setPage((p) => (p = "cvitaes"));
     setData([]);
     setFilter([]);
     setRefresh((p) => !p);
@@ -126,11 +126,11 @@ export const Cvs = ({ data, setData, setRefresh, setPage, jobs, filter, setFilte
               setForm(el);
             }}
           >
-            <span className="w-[450px] text-start">{el.planWork.job}</span>
-            <span className="w-[150px]">
+            <span className="w-[350px] text-start">{el.planWork.job}</span>
+            <span className="w-[150px] text-start">
               {el.general.lastName.slice("")[0]}.{el.general.firstName}
             </span>
-            <span className="w-[180px]">{el.planWork.salary}</span>
+            <span className="w-[180px] text-end">{el.planWork.salary}</span>
           </button>
         ))}
       </div>

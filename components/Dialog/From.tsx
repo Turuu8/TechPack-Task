@@ -46,7 +46,7 @@ export const From = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps
             >
               <Dialog.Panel
                 className={`w-full  ${
-                  type === "detail" ? "max-w-2xl" : "max-w-md"
+                  type === "detail" ? "max-w-3xl" : "max-w-md"
                 } transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
               >
                 <Dialog.Title as="h3" className="text-xl text-center font-medium leading-6 text-gray-900">

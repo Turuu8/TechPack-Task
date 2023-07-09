@@ -26,11 +26,7 @@ const Login = () => {
       setChecking(true);
       setUserInfo(res.data.user);
       localStorage.setItem("token", res.data.token);
-      res.data.user.role === "admin" && router.push(`/${res.data.user.role}`);
-      res.data.user.role === "user" && location.reload();
-      setTimeout(() => {
-        res.data.user.role === "admin" && setLoader(false);
-      }, 500);
+      location.reload();
     } catch (error: any) {
       setLoader(false);
       alert(error.response.data);

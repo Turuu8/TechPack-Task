@@ -1,17 +1,18 @@
+import CV from "@models/cv";
 import User from "@models/user";
+import Send from "@models/send";
+import { ObjectId } from "mongodb";
 import { connectDB } from "@utils/database";
 
-export const PATCH = async (req: Request, { params }: { params: { id: string } }) => {
-  const { role } = await req.json();
+export const DELETE = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     await connectDB();
 
-    const user = await User.find({ _id: params.id });
+    await Send.deleteOne({ userid: new ObjectId(params.id) });
+    await CV.deleteOne({ userid: new ObjectId(params.id) });
+    const deletedUser = await User.deleteOne({ _id: new ObjectId(params.id) });
 
-    user[0].role = role;
-    await user[0].save();
-
-    return new Response(JSON.stringify(true), { status: 201 });
+    return new Response(JSON.stringify(deletedUser.acknowledged), { status: 201 });
   } catch (error: unknown | any) {
     return new Response(error, { status: 500 });
   }

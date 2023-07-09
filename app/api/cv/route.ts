@@ -1,7 +1,7 @@
 import CV from "@models/cv";
 import { connectDB } from "@utils/database";
 
-export const GET = async (req: any) => {
+export const GET = async (req: Request) => {
   try {
     await connectDB();
 

@@ -36,6 +36,14 @@ export const deleleteJob = async (props: string) => {
     alert(error.response.data);
   }
 };
+export const deleleteUser = async (props: string) => {
+  try {
+    const res = await axios.delete(`api/users/${props}`);
+    return res.data;
+  } catch (error: unknown | any) {
+    alert(error.response.data);
+  }
+};
 
 export const editJob = async ({ jobId, editValue }: { jobId: string; editValue: string }) => {
   try {

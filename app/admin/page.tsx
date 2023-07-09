@@ -18,15 +18,14 @@ const page = () => {
   const [cvdata, setCvdata] = useState<any>([]);
   const [filter, setFilter] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState("all");
+  const [page, setPage] = useState("");
   const [currentList, setCurrentList] = useState(0);
 
   const { userInfo, logout } = useAuthProvider() as unknown as AuthType;
 
   useEffect(() => {
     switch (page) {
-      case "all":
-        console.log("all");
+      case "":
         (async () => {
           const getJobData = await getJobs();
           const getSendData = await getSendCVs();
@@ -42,7 +41,6 @@ const page = () => {
         })();
         break;
       case "cvitaes":
-        console.log("cvitaes");
         (async () => {
           const getSendData = await getSendCVs();
           const getJobData = await getJobs();
@@ -58,14 +56,12 @@ const page = () => {
 
         break;
       case "users":
-        console.log("users");
         (async () => {
           const getUserData = await getUsers();
           setData({ ...data, users: getUserData });
         })();
         break;
       case "jobs":
-        console.log("jobs");
         (async () => {
           const getJobData = await getJobs();
           setData({ ...data, jobs: getJobData });

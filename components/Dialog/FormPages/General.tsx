@@ -13,7 +13,7 @@ export const General = () => {
       <Field name="firstName" type="firstName" className={`w-full px-3 py-1 border rounded-md`} />
 
       <span className="mt-4">Регистрийн дугаар:</span>
-      <Field placeholder="ИО99221133" name="idNumber" type="idNumber" className={`w-full px-3 py-1 border rounded-md`} />
+      <Field placeholder="АЭ99221133" name="idNumber" type="idNumber" className={`w-full px-3 py-1 border rounded-md`} />
 
       <span className="mt-4">Хүйс:</span>
       <Field as="select" name="gender" type="gender" className={`w-full px-3 py-1 border rounded-md`}>
@@ -23,7 +23,8 @@ export const General = () => {
       </Field>
 
       <span className="mt-4">Төрсөн огноо:</span>
-      <Field placeholder="2000-1-1" name="birthday" type="birthday" className={`w-full px-3 py-1 border rounded-md`} />
+      <p className="text-sm text-gray-500">1999-01-30 & 1999/01/30</p>
+      <Field name="birthday" type="birthday" className={`w-full px-3 py-1 border rounded-md`} />
 
       <button type="submit" className="border w-full mt-6 py-2 rounded-md bg-gray-900 text-white">
         Хадгалах

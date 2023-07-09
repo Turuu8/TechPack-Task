@@ -13,7 +13,7 @@ export const PATCH = async (req: Request) => {
     filter[0].degree = form.update.degree;
     filter[0].gpa = form.update.gpa;
     filter[0].occupation = form.update.occupation;
-    filter[0].schoolName = form.update.country;
+    filter[0].schoolName = form.update.schoolName;
     filter[0].endYear = form.update.endYear;
     filter[0].enstartYear = form.update.enstartYear;
 

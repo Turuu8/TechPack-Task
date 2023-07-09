@@ -243,7 +243,7 @@ const page = () => {
           </div>
 
           <h2 className="text-xl pt-7">Боловсрол</h2>
-          <div className="my-2 px-4 pt-3 pb-8 bg-white rounded-lg relative">
+          <div className="my-2 px-4 pt-4 pb-4 bg-white rounded-lg relative">
             <div className="flex-between flex-wrap gap-y-14">
               {data?.education.map((el: MapProps, i: number) => {
                 if (i == 0) {
