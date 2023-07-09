@@ -72,7 +72,7 @@ export const Users = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
         <div className="flex flex-col pt-6 gap-5">
           {data?.users[0] === undefined && <SemiLoader />}
           {data?.users?.map((el: MapUserProps, i: number) => (
-            <div key={i} className="flex-between text-lg font-normal w-full px-5 py-2 border-b-2 rounded-md">
+            <div key={i} className="flex-between font-normal w-full px-5 py-2 border-b-2 rounded-md">
               <span className="w-[250px] capitalize">{el.firstName}</span>
               <span className="w-[150px]">{el.phoneNumber}</span>
               <span className="w-[400px]">{el.email}</span>

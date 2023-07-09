@@ -29,18 +29,10 @@ export const GET = async (request: Request) => {
 
     const inbox = await Send.find({});
 
-    const j = inbox.map(async (el) => {
+    inbox.map(async (el) => {
       const res = await CV.findOne({ userid: el.userid });
       return res.userid.valueOf();
     });
-    // // if (exist) {
-    // //   return new Response("Илгээлдсэн байна", { status: 500 });
-    // // }
-
-    // await Send.create({
-    //   userid: new ObjectId(id),
-    // });
-
     return new Response(JSON.stringify(inbox), { status: 201 });
   } catch (error) {
     return new Response("Хүсэл амжилтгүй", { status: 500 });

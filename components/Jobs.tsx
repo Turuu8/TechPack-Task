@@ -70,7 +70,7 @@ export const Jobs = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
         {data.jobs[0] === undefined && <SemiLoader />}
         {data?.jobs.toReversed().map((el: { _id: string; jobName: string }, i: number) => (
           <div key={i} className="w-full py-2 border-b-2 rounded-md px-5 flex-between">
-            <h2 className="text-xl">{el.jobName}</h2>
+            <h2>{el.jobName}</h2>
             <div className="flex gap-10">
               <button
                 className="group relative"

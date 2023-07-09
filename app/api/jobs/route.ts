@@ -24,7 +24,7 @@ export const GET = async () => {
   try {
     await connectDB();
 
-    const jobs: any = await Job.find();
+    const jobs = await Job.find();
     return new Response(JSON.stringify(jobs), { status: 201 });
   } catch (error: unknown | any) {
     return new Response(error, { status: 500 });

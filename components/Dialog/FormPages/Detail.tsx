@@ -3,8 +3,8 @@ import { Field } from "formik";
 export const Detail = ({ form }) => {
   return (
     <>
-      <div className="flex-between">
-        <span className="mt-4">Миний тухай:</span> <span className="mt-4">{form.general.aboutMe}</span>
+      <div className="flex justify-between">
+        <span className="mt-4 min-w-[110px]">Миний тухай:</span> <span className="mt-4">{form.general.aboutMe}</span>
       </div>
       <div className="flex-between">
         <span className="mt-4">Овог:</span> <span className="mt-4">{form.general.lastName}</span>

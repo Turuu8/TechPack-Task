@@ -320,9 +320,9 @@ const page = () => {
 
 const TitleFrom = ({ title, input }: { title: string; input: string | undefined }) => {
   return (
-    <div>
+    <div className={`${title === "Миний тухай" && " pr-5"}`}>
       <h3 className="flex gap-6">{title}</h3>
-      <span className="text-gray-500 w-full">{input}</span>
+      <span className={`text-gray-500 w-full`}>{input}</span>
     </div>
   );
 };
