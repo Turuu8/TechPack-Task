@@ -69,7 +69,7 @@ export interface FromProps {
   isOpen: boolean;
   closeModal: () => void;
   handleSubmit: (props: GeneralFrom) => void;
-  from: GeneralFrom | any;
+  from?: GeneralFrom | any;
 }
 
 export interface GeneralFrom {

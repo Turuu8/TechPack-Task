@@ -8,6 +8,7 @@ import { AuthType, GeneralFrom } from "@types";
 import { formDelete, formEdit, formPut, generalFormGet } from "@utils";
 import { useAuthProvider } from "@context/AuthProvider";
 import { number } from "yup";
+import axios from "axios";
 
 const page = () => {
   const [isOpen, setIsOpen] = useState({
@@ -118,7 +119,12 @@ const page = () => {
   }, [refresh]);
 
   const sendCV = async () => {
-    console.log("send");
+    try {
+      const res = await axios.post(`api/cv/send`, { id: userInfo?.id });
+      alert(res.data);
+    } catch (error: unknown | any) {
+      alert(error.response.data);
+    }
   };
 
   return (
@@ -237,7 +243,7 @@ const page = () => {
           </div>
 
           <h2 className="text-xl pt-7">Боловсрол</h2>
-          <div className="my-2 px-4 py-3 bg-white rounded-lg relative">
+          <div className="my-2 px-4 pt-3 pb-8 bg-white rounded-lg relative">
             <div className="flex-between flex-wrap gap-y-14">
               {data?.education.map((el: MapProps, i: number) => {
                 if (i == 0) {
@@ -245,16 +251,15 @@ const page = () => {
                 }
                 return (
                   <div key={i} className={`group w-1/2 pl-5 py-3 flex flex-col gap-5 relative hover:bg-gray-100 rounded-md`}>
-                    <span>
-                      {" "}
-                      {el.startYear} - {el.endYear}
+                    <span className="text-xl">
+                      {el.startYear} - {el.endYear} он
                     </span>
                     <TitleFrom title="Боловсролын зэрэг" input={el.degree} />
                     <TitleFrom title="Улс" input={el.country} />
                     <TitleFrom title="Сургуулийн нэр" input={el.schoolName} />
                     <TitleFrom title="Эзэмшсэн мэргэжил" input={el.occupation} />
                     <TitleFrom title="Голч дүн (GPA)" input={el.gpa} />
-                    {/* group-hover:opacity-100 */}
+
                     <div className="flex flex-col gap-4 group-hover:opacity-100 opacity-0 absolute bottom-4 right-5">
                       <button
                         className="group relative bg-white hover-btn rounded-full p-1"
@@ -281,8 +286,6 @@ const page = () => {
                   </div>
                 );
               })}
-
-              <div className="w-1/2 flex flex-col gap-5">{/* <TitleFrom title="Ажиллахаар төлөвлөж буй чиглэл" input="Turmunkh" /> */}</div>
             </div>
             <button
               className="absolute top-1 right-1 rounded-full p-1 bg-gray-100 hover-btn"
@@ -327,6 +330,8 @@ const TitleFrom = ({ title, input }: { title: string; input: string | undefined 
 export default page;
 
 interface MapProps {
+  startYear: string;
+  endYear: string;
   _id: string;
   degree: string;
   occupation: string;

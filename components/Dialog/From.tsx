@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CloseButton } from "./CloseButton";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
-import { Connect, Education, General, PlanWork } from "./FormPages";
+import { Connect, Detail, Education, General, PlanWork } from "./FormPages";
 
 export const From = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps) => {
   const [jobs, setJobs] = useState([]);
@@ -44,13 +44,17 @@ export const From = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel
+                className={`w-full  ${
+                  type === "detail" ? "max-w-2xl" : "max-w-md"
+                } transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+              >
                 <Dialog.Title as="h3" className="text-xl text-center font-medium leading-6 text-gray-900">
                   {type === "general" && "Ерөнхий мэдээлэл"}
                   {type === "connect" && "Холбоо барих мэдээлэл"}
                   {type === "planWork" && "Ажиллахаар төлөвлөж буй ажлын байр"}
                   {type === "education" && "Боловсрол"}
-                  <p className="text-sm text-gray-500">Монголоор бөглөн үү</p>
+                  {type === "detail" ? null : <p className="text-sm text-gray-500">Монголоор бөглөн үү</p>}
                 </Dialog.Title>
                 <CloseButton closeModal={closeModal} />
                 <Formik initialValues={from} onSubmit={handleSubmit}>
@@ -59,6 +63,7 @@ export const From = ({ isOpen, closeModal, handleSubmit, from, type }: FromProps
                     {type === "connect" && <Connect />}
                     {type === "planWork" && <PlanWork jobs={jobs} />}
                     {type === "education" && <Education />}
+                    {type === "detail" && <Detail form={from} />}
                   </Form>
                 </Formik>
               </Dialog.Panel>

@@ -45,7 +45,7 @@ export const Users = ({ data, setData, setRefresh, setPage }: JobsPrps) => {
   return (
     <div className="flex flex-col pt-6 px-8 pb-10">
       {/* ------ Filter form ------*/}
-      <div className="w-full pl-4 relative">
+      <div className="w-full pl-4 relative text-sm">
         <Formik initialValues={from} onSubmit={handleSubmit}>
           <Form className="flex gap-5">
             <Field placeholder="Нэр" name="firstName" type="firstName" className={`w-[235px] rounded-md px-2 border`} />

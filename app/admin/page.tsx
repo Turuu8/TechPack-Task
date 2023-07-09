@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { AuthType } from "@types";
 import { useAuthProvider } from "@context/AuthProvider";
 import { Cvs, Jobs, Users } from "@components";
-import { getJobs, getUsers } from "@utils";
+import { getJobs, getSendCVs, getUsers } from "@utils";
+import axios from "axios";
 
 const page = () => {
   const [data, setData] = useState({
@@ -14,24 +15,47 @@ const page = () => {
     jobs: [],
     cvitae: [],
   });
+  const [cvdata, setCvdata] = useState<any>([]);
+  const [filter, setFilter] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState("");
-  const [currentList, setCurrentList] = useState(1);
+  const [page, setPage] = useState("all");
+  const [currentList, setCurrentList] = useState(0);
 
   const { userInfo, logout } = useAuthProvider() as unknown as AuthType;
 
   useEffect(() => {
     switch (page) {
-      case "":
+      case "all":
         console.log("all");
         (async () => {
           const getJobData = await getJobs();
+          const getSendData = await getSendCVs();
+          if (getSendData) {
+            getSendData?.map(async (el: { userid: string }) => {
+              const res = await axios.post("api/cv/send/cv", { userid: el.userid });
+              setCvdata((p: any) => [...p, res.data]);
+              setFilter((p: any) => [...p, res.data]);
+            });
+          }
           const getUserData = await getUsers();
           setData({ ...data, jobs: getJobData, users: getUserData });
         })();
         break;
       case "cvitaes":
         console.log("cvitaes");
+        (async () => {
+          const getSendData = await getSendCVs();
+          const getJobData = await getJobs();
+          if (getSendData) {
+            getSendData?.map(async (el: { userid: string }) => {
+              const res = await axios.post("api/cv/send/cv", { userid: el.userid });
+              setCvdata((p: any) => [...p, res.data]);
+              setFilter((p: any) => [...p, res.data]);
+            });
+          }
+          setData({ ...data, jobs: getJobData });
+        })();
+
         break;
       case "users":
         console.log("users");
@@ -98,7 +122,9 @@ const page = () => {
         </div>
 
         <div className="m-8 bg-white">
-          {currentList === 0 && <Cvs />}
+          {currentList === 0 && (
+            <Cvs data={cvdata} setPage={setPage} setData={setCvdata} setRefresh={setRefresh} jobs={data.jobs} filter={filter} setFilter={setFilter} />
+          )}
           {currentList === 1 && <Users data={data} setPage={setPage} setData={setData} setRefresh={setRefresh} />}
           {currentList === 2 && <Jobs data={data} setPage={setPage} setData={setData} setRefresh={setRefresh} />}
         </div>

@@ -19,6 +19,15 @@ export const getJobs = async () => {
   }
 };
 
+export const getSendCVs = async () => {
+  try {
+    const res = await axios.get("api/cv/send");
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleleteJob = async (props: string) => {
   try {
     const res = await axios.delete(`api/jobs/${props}`);
@@ -49,6 +58,16 @@ export const editRole = async ({ userId, editValue }: { userId: string; editValu
 export const userFilter = async (props: { firstName: string; phoneNumber: string }) => {
   try {
     const res = await axios.post(`api/users/filter`, props);
+    return res.data;
+  } catch (error: unknown | any) {
+    alert(error.response.data);
+    return error.response.data;
+  }
+};
+
+export const cvitaeFilter = async (props: { firstName: string; job: string; salary: string }) => {
+  try {
+    const res = await axios.post(`api/cv/filter`, props);
     return res.data;
   } catch (error: unknown | any) {
     alert(error.response.data);
