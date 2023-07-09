@@ -203,7 +203,7 @@ const page = () => {
             <button className="absolute top-1 right-1 rounded-full p-1 bg-gray-100 hover-btn" onClick={() => setIsOpen({ ...isOpen, connect: true })}>
               <Image alt="icon" src="/assets/icons/edit.svg" width={25} height={25} className="object-contain h-[25px] w-[25px]" />
             </button>
-            <From
+            <Forms
               closeModal={() => {
                 setIsOpen({ ...isOpen, connect: !isOpen.connect });
               }}
@@ -231,7 +231,7 @@ const page = () => {
             >
               <Image alt="icon" src="/assets/icons/edit.svg" width={25} height={25} className="object-contain h-[25px] w-[25px]" />
             </button>
-            <From
+            <Forms
               closeModal={() => {
                 setIsOpen({ ...isOpen, planWork: !isOpen.planWork });
               }}
